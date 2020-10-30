@@ -22,6 +22,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = MIN_CAPACITY
+        self.size = 0
+        self.storage = [None] * self.capacity
 
 
     def get_num_slots(self):
@@ -35,6 +38,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        pass 
 
 
     def get_load_factor(self):
@@ -44,7 +48,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        pass 
 
     def fnv1(self, key):
         """
@@ -54,15 +58,20 @@ class HashTable:
         """
 
         # Your code here
-
+        pass
 
     def djb2(self, key):
         """
         DJB2 hash, 32-bit
-
         Implement this, and/or FNV-1.
         """
         # Your code here
+        enc = key.encode()
+        hsh = 5381
+        for char in enc:
+            hsh = ((hsh << 5) + hsh) + char
+        
+        return hsh & 0xFFFFFFFF
 
 
     def hash_index(self, key):
@@ -82,6 +91,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # hash the key and get the index
+        index = self.hash_index(key)
+        # Store the value in the array at the hashed index
+        self.storage[index] = value
 
 
     def delete(self, key):
@@ -93,6 +106,13 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        index = self.hash_index(key)
+        if self.storage[index]:
+            self.size -= 1
+            self.storage[index] = None 
+        else:  
+            print(f'The key is not found!')            
+
 
 
     def get(self, key):
@@ -104,6 +124,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # Compute hash
+        index = self.hash_index(key)
+        # Go to first node in list in storage
+        if self.storage[index]:
+            # Found - return the data value
+            return self.storage[index]
+        else:
+            return None
 
 
     def resize(self, new_capacity):
@@ -140,11 +168,11 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     # Test resizing
-    old_capacity = ht.get_num_slots()
-    ht.resize(ht.capacity * 2)
-    new_capacity = ht.get_num_slots()
+    # old_capacity = ht.get_num_slots()
+    # ht.resize(ht.capacity * 2)
+    # new_capacity = ht.get_num_slots()
 
-    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
     # Test if data intact after resizing
     for i in range(1, 13):
