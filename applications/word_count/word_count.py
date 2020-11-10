@@ -1,7 +1,27 @@
+
 def word_count(s):
-    # Your code here
+    removed_char = ['"', ':', ';', ',', '.', '-', '+', '=', '/', '\\', '|', '[', ']', '{', '}', '(', ')', '*', '^', '&']
 
+    counts = {}
 
+    for w in s.split():
+        new_word = ""
+        for char in w:
+            if char not in removed_char:
+                new_word += char
+        word = new_word.lower()
+
+        if word in counts:
+            counts[word] += 1
+        elif word == "" or word == " ":
+            break
+        else:
+            counts[word] = 1
+
+    if s == "":
+        return {}
+    else:
+        return counts
 
 if __name__ == "__main__":
     print(word_count(""))
